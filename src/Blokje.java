@@ -1,5 +1,5 @@
 
-public class Blokje {
+public class Blokje implements Comparable {
 	
 	private int xco;
 	private int yco;
@@ -124,6 +124,19 @@ public class Blokje {
 		
 	}
 
+	public void verschuif(int minX, int minY) {
+		this.xco = this.xco+minX;
+		this.yco = this.yco+minY;
+		
+	}
+	//sorteren: laagste z waarden eerst
+
+	@Override
+	public int compareTo(Object tweedeBlokje) {
+		
+		int compareage=((Blokje)tweedeBlokje).getZco();
+		return this.zco-compareage;
+	}
 	
 	
 	

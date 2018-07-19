@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) {
-	
+		StringBuilder sb = new StringBuilder();
+		
 		Scanner sc = new Scanner(System.in);
 		
 		int aantalAchtbanen = sc.nextInt();
@@ -17,17 +20,14 @@ public class Main {
 		Blokje vorigBlokje = new Blokje();
 		Blokje volgendBlokje = new Blokje();
 		
-		int [][] matrix = new int [5][5];
-		
 		//voor elke achtbaan
 		for(int achtbaanId=1 ; achtbaanId<aantalAchtbanen+1 ; achtbaanId++) {
-		
+
 		//variabelen resetten op beginwaarden
 			vorigBlokje.reset();
 			volgendBlokje.reset();
 			huidigeRichting = 'O';
 			waarde = 'S';
-			matrix = new int [5][5];	//later nog naar 1,1 wijzigen zodat elke achtbaan er volledig opstaat
 			
 		//input lezen
 			lengteSpoor = sc.nextInt();
@@ -37,14 +37,18 @@ public class Main {
 			spoorSequentie = spoorSequentie.substring(1, spoorSequentie.length());
 			
 			vorigBlokje.setAlles(-1, 0, 0, 'O', '=');
-		//overlopen van de achtbaan
+
+			ArrayList<Blokje> blokjesLijst = new ArrayList<Blokje>();
+			
+			//overlopen van de achtbaan
 			for(int i=0 ; i<lengteSpoor; i++) {
 				waarde = spoorSequentie.charAt(i);
 				
 				volgendBlokje = volgendBlokje(huidigeRichting,vorigBlokje,waarde);
-				System.out.print(waarde+"  ");
-				volgendBlokje.print();
-				//teken blokje in de matrix
+				
+				//voeg het blokje toe aan de arrayList
+				blokjesLijst.add(volgendBlokje);
+
 				
 				//opt einde
 				vorigBlokje = volgendBlokje;
@@ -52,6 +56,85 @@ public class Main {
 				if (waarde == 'U') {vorigBlokje.setSpoorTeken('U');}
 				
 			}
+			
+			//nu zitten alle blokjes in de blokjeslijst, de blokjes hebben x, y z coordinaten en het nodige teken
+			
+			//grenzen zetten van de matrix, verschuiven van de blokjes
+			int minX =0;
+			int minY =0;
+			int maxX =0;
+			int maxY =0;
+			
+			Blokje b = new Blokje();
+			
+			for(int i=0 ; i< blokjesLijst.size(); i++) {
+
+				b = blokjesLijst.get(i);
+				
+				if(minX > b.getXco()) {minX = b.getXco();}
+				if(maxX < b.getXco()) {maxX = b.getXco();}
+				if(minY > b.getYco()) {minY = b.getYco();}
+				if(maxY < b.getYco()) {maxY = b.getYco();}
+			}
+			
+			/*System.out.println("minx: "+minX);
+			System.out.println("maxx: "+maxX);
+			System.out.println("miny: "+minY);
+			System.out.println("maxy: "+maxY);
+			System.out.println();*/
+			
+			//alles opschuiven zodat minimumwaarden 0 zijn
+			
+			//blokjes opschuiven
+			for(int i=0 ; i< blokjesLijst.size(); i++) {
+				blokjesLijst.get(i).verschuif(Math.abs(minX), Math.abs(minY));
+			}
+			
+			//maximumwaarden opschuiven
+
+			maxX = maxX +Math.abs(minX);
+			maxY = maxY +Math.abs(minY);
+			minX = 0;
+			minY = 0;
+			
+			/*System.out.println("minx: "+minX);
+			System.out.println("maxx: "+maxX);
+			System.out.println("miny: "+minY);
+			System.out.println("maxy: "+maxY);*/
+			
+			//arrayList sorteren op blokjes: degene met de laagste Zco eerst
+			Collections.sort(blokjesLijst);
+			
+			/*for(Blokje x: blokjesLijst) {x.print();}
+			
+			System.out.println("maxX = "+maxX);
+			System.out.println("maxY = "+maxY);
+			*/
+			
+			//matrix opstellen
+			char [][] matrix = new char[maxX+1][maxY+1];
+			
+			for(Blokje x: blokjesLijst) {matrix[x.getXco()][x.getYco()] = x.getWaarde();}
+			for(int i=0; i<maxX+1; i++) {
+				for (int j=0; j<maxY+1; j++) {
+					if(matrix[i][j]== '\0') {matrix[i][j]='.';}
+				}
+			}
+			
+			for(int y= maxY; y>-1 ; y--) {
+				sb.append(achtbaanId+" ");
+				for(int x=0; x<maxX+1; x++) {
+					//print 1 lijn
+					sb.append(matrix[x][y]);
+				}
+				sb.append('\n');
+			}
+			
+			
+			
+			
+		
+			
 
 			
 			
@@ -60,6 +143,7 @@ public class Main {
 			
 			
 		}
+		System.out.println(sb.toString());
 		
 		
 		
