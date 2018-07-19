@@ -36,16 +36,20 @@ public class Main {
 		//de eerste is een spatie, deze moet nog weg
 			spoorSequentie = spoorSequentie.substring(1, spoorSequentie.length());
 			
-			
+			vorigBlokje.setAlles(-1, 0, 0, 'O', '=');
 		//overlopen van de achtbaan
 			for(int i=0 ; i<lengteSpoor; i++) {
+				waarde = spoorSequentie.charAt(i);
 				
 				volgendBlokje = volgendBlokje(huidigeRichting,vorigBlokje,waarde);
-				
+				System.out.print(waarde+"  ");
+				volgendBlokje.print();
 				//teken blokje in de matrix
 				
 				//opt einde
 				vorigBlokje = volgendBlokje;
+				//enkel van belang als het een up is
+				if (waarde == 'U') {vorigBlokje.setSpoorTeken('U');}
 				
 			}
 
@@ -56,10 +60,6 @@ public class Main {
 			
 			
 		}
-		
-		
-		
-		//inlezen van de input
 		
 		
 		
@@ -103,10 +103,6 @@ public class Main {
 			returnBlokje.setWaarde('_');
 			break;
 			
-		case 'L':
-			
-			break;
-			
 		case 'D':
 			//yco moet moet met 1 verlaagd worden
 			returnBlokje.setYco(vorigBlokje.getYco()-1);
@@ -143,6 +139,19 @@ public class Main {
 			break;
 			
 		case 'R':
+			returnBlokje.genereerYcoAdhvVorigBlokje(vorigBlokje);
+			returnBlokje.setXenZco(vorigBlokje);
+			returnBlokje.setRichtingDraaiRechts(vorigBlokje.getRichting());
+			
+			//teken ervan bepalen
+			returnBlokje.setWaarde('_');
+			break;
+			
+		case 'L':
+			returnBlokje.genereerYcoAdhvVorigBlokje(vorigBlokje);
+			returnBlokje.setXenZco(vorigBlokje);
+			returnBlokje.setRichtingDraaiLinks(vorigBlokje.getRichting());	
+			returnBlokje.setWaarde('_');
 			break;
 			
 		default: 

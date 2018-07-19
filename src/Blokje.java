@@ -6,6 +6,7 @@ public class Blokje {
 	private int zco;
 	private char richting;
 	private char waarde;
+	private char spoorTeken;
 	
 	//constructoren
 	public Blokje() {
@@ -44,6 +45,8 @@ public class Blokje {
 	public int getZco() {return zco;}
 	public char getRichting() {return richting;}
 	public char getWaarde() {return waarde;}
+	private char getSpoorTeken() {return spoorTeken;}
+
 
 	/**
 	 * zet de xco, yco, en zco op 0
@@ -87,13 +90,37 @@ public class Blokje {
 	}
 
 	public void genereerYcoAdhvVorigBlokje(Blokje vorigBlokje) {
-		if(vorigBlokje.getWaarde()=='U') {
+		if(vorigBlokje.getSpoorTeken()=='U') {
 			this.setYco(vorigBlokje.getYco()+1);
 		}
 		
 		else {
 			this.setYco(vorigBlokje.getYco());	
 		}
+		
+	}
+	
+	public void setRichtingDraaiRechts(char vorigBlokjeRichting) {
+		if(vorigBlokjeRichting=='N') {this.setRichting('O');}
+		if(vorigBlokjeRichting=='O') {this.setRichting('Z');}
+		if(vorigBlokjeRichting=='Z') {this.setRichting('W');}
+		if(vorigBlokjeRichting=='W') {this.setRichting('N');}
+	}
+
+	public void setRichtingDraaiLinks(char vorigBlokjeRichting) {
+		if(vorigBlokjeRichting=='N') {this.setRichting('W');}
+		if(vorigBlokjeRichting=='O') {this.setRichting('N');}
+		if(vorigBlokjeRichting=='Z') {this.setRichting('O');}
+		if(vorigBlokjeRichting=='W') {this.setRichting('Z');}
+	}
+
+	public void print() {
+		System.out.println(+ this.xco +","+ this.yco +","+this.zco +" ;;;"+this.waarde);
+		
+	}
+
+	public void setSpoorTeken(char c) {
+		this.spoorTeken = c;
 		
 	}
 
