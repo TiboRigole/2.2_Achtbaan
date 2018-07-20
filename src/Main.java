@@ -288,6 +288,7 @@ class Blokje implements Comparable {
 	public char getRichting() {return richting;}
 	public char getWaarde() {return waarde;}
 	private char getSpoorTeken() {return spoorTeken;}
+	
 
 
 	/**
